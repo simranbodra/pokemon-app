@@ -20,6 +20,7 @@ const PokemonCard: React.FC<ChildComponentProps> = ({ data }) => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        console.log(data);
         fetchData();
     
         // Clean up function (optional)
@@ -31,9 +32,9 @@ const PokemonCard: React.FC<ChildComponentProps> = ({ data }) => {
       async function fetchData(): Promise<void> {
         try {
           await fetch(data.url).then(async response => {
-            console.log(response);
+            // console.log(response);
             const fetchedData = await response.json();
-            console.log(fetchedData);
+            // console.log(fetchedData);
     
             // Modify the data before setting it in the state
             const pokemonDetails: PokemonDetailsType = {
@@ -42,12 +43,12 @@ const PokemonCard: React.FC<ChildComponentProps> = ({ data }) => {
                 image: fetchedData.sprites.other.dream_world.front_default
               }
     
-              console.log(pokemonDetails);
+            //   console.log(pokemonDetails);
           setData(pokemonDetails);
           setLoading(false);
           });
         } catch (error) {
-          setError('Error fetching data');
+          setError('Error fetching details data');
           setLoading(false);
         }
       };

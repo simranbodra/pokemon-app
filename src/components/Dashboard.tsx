@@ -12,8 +12,10 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  let offset = 0;
+
   useEffect(() => {
-    fetchData();
+    fetchData(true, offset);
 
     // Clean up function (optional)
     return () => {
@@ -29,18 +31,30 @@ const Dashboard: React.FC = () => {
     return <div>{error}</div>;
   }
 
-  async function fetchData(): Promise<void> {
+  async function fetchData(loadMore: boolean, offset: number): Promise<void> {
+    console.log(offset);
     try {
-      await fetch('https://pokeapi.co/api/v2/pokemon?limit=20').then(async response => {
+      await fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${offset}`).then(async response => {
         const fetchedData = await response.json();
 
         // Modify the data before setting it in the state
-      const pokemonDataList = fetchedData.results.map((item: any, index: number) => ({
-        ...item,
-        id: index
-      }));
+      let pokemonIndex = pokemonDataList.length;
+      let pokemonDataListFetched = fetchedData.results.map((item: any) => {
+        pokemonIndex++;
+        return {
+          ...item,
+          id: pokemonIndex
+        }
+      });
+      // console.log(pokemonDataListFetched, offset);
 
-      setData(pokemonDataList);
+      if(loadMore) {
+        pokemonDataListFetched = [...pokemonDataList, ...pokemonDataListFetched]
+      }
+
+      console.log(pokemonDataListFetched);
+      offset = pokemonDataList.length;
+      setData(pokemonDataListFetched);
       setLoading(false);
       });
     } catch (error) {
@@ -48,6 +62,11 @@ const Dashboard: React.FC = () => {
       setLoading(false);
     }
   };
+
+  function onClickMorePokemon() {
+    offset = offset + 20;
+    fetchData(true, offset);
+  }
 
   return (
     <div>
@@ -59,10 +78,10 @@ const Dashboard: React.FC = () => {
        <div className="all-container">
         {
           pokemonDataList.map((pokemon)=> 
-            <PokemonCard data={pokemon} />
+            <PokemonCard data={pokemon} key={pokemon.id}/>
           )}
        </div>
-       <button className="load-more" onClick={()=>fetchData()}>More Pokemons</button>
+       <button className="load-more" onClick={()=>onClickMorePokemon()}>More Pokemons</button>
      </div>
     </div>
     
