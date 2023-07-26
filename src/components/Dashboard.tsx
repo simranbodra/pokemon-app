@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../styles/Dashboard.css';
 import PokemonCard from './PokemonCard';
 
 interface PokemonDataType {
@@ -11,8 +12,9 @@ const Dashboard: React.FC = () => {
   const [pokemonDataList, setData] = useState<PokemonDataType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [offset, setOffset] = useState<number>(0);
 
-  let offset = 0;
+  // let offset = 0;
 
   useEffect(() => {
     fetchData(true, offset);
@@ -32,7 +34,6 @@ const Dashboard: React.FC = () => {
   }
 
   async function fetchData(loadMore: boolean, offset: number): Promise<void> {
-    console.log(offset);
     try {
       await fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${offset}`).then(async response => {
         const fetchedData = await response.json();
@@ -46,7 +47,6 @@ const Dashboard: React.FC = () => {
           id: pokemonIndex
         }
       });
-      // console.log(pokemonDataListFetched, offset);
 
       if(loadMore) {
         pokemonDataListFetched = [...pokemonDataList, ...pokemonDataListFetched]
@@ -61,10 +61,10 @@ const Dashboard: React.FC = () => {
       setError('Error fetching data');
       setLoading(false);
     }
+    setOffset(offset + 20);
   };
 
   function onClickMorePokemon() {
-    offset = offset + 20;
     fetchData(true, offset);
   }
 
@@ -72,9 +72,11 @@ const Dashboard: React.FC = () => {
     <div>
       
       <div className="app-container">
-     <h1>Pokemon Kingdom .</h1>
-    
-     <div className="pokemon-container">
+        <h1>Pokemon Kingdom</h1>
+        <div className='description'>
+          <h3>The Pokémon franchise revolves around 1010 fictional species of collectible monsters, each having unique designs, skills and powers. Conceived by Satoshi Tajiri in early 1989, Pokémon (or Pocket Monsters) are fictional creatures that inhabit the fictional Pokémon World.</h3>
+        </div>
+        <div className="pokemon-container">
        <div className="all-container">
         {
           pokemonDataList.map((pokemon)=> 
@@ -82,8 +84,8 @@ const Dashboard: React.FC = () => {
           )}
        </div>
        <button className="load-more" onClick={()=>onClickMorePokemon()}>More Pokemons</button>
-     </div>
-    </div>
+        </div>
+      </div>
     
     </div>
   );
