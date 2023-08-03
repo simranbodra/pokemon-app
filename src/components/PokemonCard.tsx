@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../styles/PokemonCard.css";
+import PokemonDetails from "./PokemonDetails";
+import Tooltip from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
 
 interface PokemonDetailsType {
   id: number;
@@ -19,6 +22,10 @@ const PokemonCard: React.FC<ChildComponentProps> = ({ data }) => {
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [hover, setHover] = useState<boolean>(true);
+  const tooltipStyle = {
+    display: hover ? 'block' : 'none'
+  }
 
   useEffect(() => {
     console.log(data);
@@ -62,8 +69,28 @@ const PokemonCard: React.FC<ChildComponentProps> = ({ data }) => {
     return <div>{error}</div>;
   }
 
-  function onClickReadMore() {
+  function handleMouseIn() {
+    setHover(true);
+  }
+  
+  function handleMouseOut() {
+    setHover(false);
+  }
 
+  function onClickReadMore() {
+    console.log("on click read more");
+    // return <PokemonDetails></PokemonDetails>;
+//     return (
+//       <div>
+//   <div onMouseOver={handleMouseIn} onMouseOut={handleMouseOut}>on hover here we will show the tooltip</div>
+//   <div>
+//     <div style={tooltipStyle}>this is the tooltip!!</div>
+//   </div>
+// </div>
+//   )
+return <Tooltip title="Add" arrow>
+  <Button>Arrow</Button>
+</Tooltip>
   }
 
   return (
@@ -78,10 +105,18 @@ const PokemonCard: React.FC<ChildComponentProps> = ({ data }) => {
             />
             <div className="details-container">
               <h4>
-                <b>#0{pokemonDetails.id}</b>
+                <b>#{pokemonDetails.id}</b>
               </h4>
-              <div className="name-container">{pokemonDetails.name.toUpperCase()} 
-              <span><button className="read-more-btn" onClick={()=>onClickReadMore()}>Read more</button></span>
+              <div className="name-container">
+                {pokemonDetails.name.toUpperCase()}
+                <span>
+                  <button
+                    className="read-more-btn"
+                    onClick={() => onClickReadMore()}
+                  >
+                    Read More
+                  </button>
+                </span>
               </div>
             </div>
           </div>
