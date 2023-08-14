@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/PokemonCard.css";
 import PokemonDetails from "./PokemonDetails";
-import Tooltip from "@mui/material/Tooltip";
-import Button from "@mui/material/Button";
 
 interface PokemonDetailsType {
   id: number;
@@ -56,7 +54,7 @@ const PokemonCard: React.FC<ChildComponentProps> = ({ data }) => {
         setLoading(false);
       });
     } catch (error) {
-      setError("Error fetching details data");
+      setError('Error fetching details data');
       setLoading(false);
     }
   }
@@ -69,28 +67,9 @@ const PokemonCard: React.FC<ChildComponentProps> = ({ data }) => {
     return <div>{error}</div>;
   }
 
-  function handleMouseIn() {
-    setHover(true);
-  }
-  
-  function handleMouseOut() {
-    setHover(false);
-  }
-
   function onClickReadMore() {
     console.log("on click read more");
-    // return <PokemonDetails></PokemonDetails>;
-//     return (
-//       <div>
-//   <div onMouseOver={handleMouseIn} onMouseOut={handleMouseOut}>on hover here we will show the tooltip</div>
-//   <div>
-//     <div style={tooltipStyle}>this is the tooltip!!</div>
-//   </div>
-// </div>
-//   )
-return <Tooltip title="Add" arrow>
-  <Button>Arrow</Button>
-</Tooltip>
+    return <PokemonDetails></PokemonDetails>;
   }
 
   return (

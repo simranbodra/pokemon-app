@@ -8,6 +8,8 @@ interface PokemonDataType {
   url: string;
 }
 
+// export default PokemonDataType;
+
 const Dashboard: React.FC = () => {
   const [pokemonDataList, setData] = useState<PokemonDataType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -29,7 +31,7 @@ const Dashboard: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  if (error) {
+  if (error !== null) {
     return <div>{error}</div>;
   }
 

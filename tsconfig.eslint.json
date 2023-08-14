@@ -1,7 +1,12 @@
+// {
+//     "extends": "./tsconfig.json",
+//     "include": [
+//       "babel.config.js"
+//     ],
+//     "exclude": ["node_modules", "dist", "coverage"]
+//   }
 {
-    "extends": "./tsconfig.json",
-    // "include": [
-    //   // "babel.config.js"
-    // ],
-    "exclude": ["node_modules", "dist", "coverage"]
-  }
+  "extends": "./tsconfig.json",
+  "exclude": ["node_modules", "test", "dist", "dist/**/*spec.ts"],
+  "include": ["src/**/*", ".eslintrc.js"]
+}

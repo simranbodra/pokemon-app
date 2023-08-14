@@ -1,29 +1,36 @@
-import { useState } from "react";
-import Tooltip from '@mui/material/Tooltip';
+import Button from "@mui/material/Button/Button";
+import Tooltip, { TooltipProps } from "@mui/material/Tooltip/Tooltip";
+import tooltipClasses from "@mui/material/Tooltip/tooltipClasses";
+import Typography from "@mui/material/Typography/Typography";
+import { styled } from "@mui/material/styles";
+import React from "react";
 
-const PokemonDetails: React.FC = () => {
-    const [hover, setHover] = useState<boolean>(true);
+const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9',
+  },
+}));
 
-    const tooltipStyle = {
-        display: hover ? 'block' : 'none'
-      }
-
-      function handleMouseIn() {
-        setHover(true);
-      }
-      
-      function handleMouseOut() {
-        setHover(false);
-      }
-
-    return (
-        <div>
-    <div onMouseOver={handleMouseIn.bind(this)} onMouseOut={handleMouseOut.bind(this)}>on hover here we will show the tooltip</div>
+export default function PokemonDetails() {
+  return (
     <div>
-      <div style={tooltipStyle}>this is the tooltip!!</div>
+      <HtmlTooltip
+        title={
+          <React.Fragment>
+            <Typography color="inherit">Tooltip with HTML</Typography>
+            <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
+            {"It's very engaging. Right?"}
+          </React.Fragment>
+        }
+      >
+        <Button>HTML</Button>
+      </HtmlTooltip>
     </div>
-  </div>
-    )
+  );
 }
-
-export default PokemonDetails;
